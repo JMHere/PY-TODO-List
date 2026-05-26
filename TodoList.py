@@ -34,7 +34,9 @@ while True:
         printTodoList()
     elif userInput == '2':
         index = input('Enter number of todo in list order: ')
+        # setting the index to 0 base for more user-friendly input
         index = int(index) - 1
+        # toggle completion status instead of setting it manually
         todoList[index]['completed'] = not todoList[index]['completed']
         printTodoList()
     elif userInput == '3':
