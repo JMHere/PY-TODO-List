@@ -1,4 +1,18 @@
-todoList = ['Homework', 'Workout']
+import json
+fileName = 'todo_list.json'
+todoList = []
+
+try:
+    with open(fileName, 'r') as f:
+        if f.read(1):
+            f.seek(0)
+            todoList = json.load(f)
+        else:
+            print('File Empty') 
+except FileNotFoundError:
+    with open(fileName, 'w') as f:
+        f.write('')
+
 
 def printTodoList():
     for i in todoList:
@@ -22,3 +36,6 @@ while True:
         printTodoList()
     elif userInput == '0':
         break
+
+with open(fileName, 'w') as f:
+    json.dump(todoList, f)
