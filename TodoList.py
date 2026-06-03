@@ -48,26 +48,30 @@ printTodoList()
 #     elif userInput == '0':
 #         break
 
-with open(fileName, 'w') as f:
-    json.dump(todoList, f)
 
 def updateListDisplay():
     
     for widget in displayFrame.winfo_children():
         widget.destroy()
 
-    for item in todoList:
+    for index, item in enumerate(todoList):
         lbl = tk.Label(displayFrame, text=item['todo'])
-        lbl.pack(anchor='w')
+        lbl.grid(row=index, column=0)
+        var = tk.BooleanVar(value=item['completed'])
+        btn = tk.Checkbutton(displayFrame, variable=var, command=lambda idx= index, v= var : updateTodoStatus(idx, v))
+        btn.grid(row=index, column=1)
 
 def addTodo():
     text = entry.get()
+    todo = { 'todo' : text, 'completed' : False }
     if text:
-        todoList.append(text)
+        todoList.append(todo)
         updateListDisplay()
+    entry.delete(0, tk.END)
 
-def updateTodoStatus():
-    pass
+def updateTodoStatus(index, var):
+    todoList[index]['completed'] = var.get()
+    updateListDisplay()
 
 def removeTodo():
     pass
@@ -78,11 +82,14 @@ root.title("TODO List")
 displayFrame = tk.Frame(root)
 displayFrame.pack()
 
-# entry = tk.Entry(root)
-# entry.pack()
-# addButton = tk.Button(root, text="Add Todo", command=addTodo)
-# addButton.pack()
+entry = tk.Entry(root)
+entry.pack()
+addButton = tk.Button(root, text="Add Todo", command=addTodo)
+addButton.pack()
 
 updateListDisplay()
 
 root.mainloop()
+
+with open(fileName, 'w') as f:
+    json.dump(todoList, f)
