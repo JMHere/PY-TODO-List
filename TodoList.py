@@ -60,6 +60,8 @@ def updateListDisplay():
         var = tk.BooleanVar(value=item['completed'])
         btn = tk.Checkbutton(displayFrame, variable=var, command=lambda idx= index, v= var : updateTodoStatus(idx, v))
         btn.grid(row=index, column=1)
+        delBtn = tk.Button(displayFrame, text="Del", command=lambda idx= index : removeTodo(idx))
+        delBtn.grid(row=index, column=2)
 
 def addTodo():
     text = entry.get()
@@ -73,19 +75,25 @@ def updateTodoStatus(index, var):
     todoList[index]['completed'] = var.get()
     updateListDisplay()
 
-def removeTodo():
-    pass
+def removeTodo(index):
+    todoList.pop(index)
+    updateListDisplay()
 
 root = tk.Tk()
+
+root.geometry('400x200')
+
 root.title("TODO List")
 
 displayFrame = tk.Frame(root)
 displayFrame.pack()
 
-entry = tk.Entry(root)
-entry.pack()
-addButton = tk.Button(root, text="Add Todo", command=addTodo)
-addButton.pack()
+inputFrame = tk.Frame(root)
+inputFrame.pack()
+entry = tk.Entry(inputFrame)
+entry.grid(row=0, column=0, padx=10)
+addButton = tk.Button(inputFrame, text="Add Todo", command=addTodo)
+addButton.grid(row=0,column=1, padx=10)
 
 updateListDisplay()
 
